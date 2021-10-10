@@ -73,9 +73,19 @@ class _LoginState extends State<Login> {
         child: Column(
           children: <Widget>[
             Container(
-              height: 400,
+              padding: EdgeInsets.only(top: 35.0),
+              margin: EdgeInsets.only(top: 2.0, left: 300.0),
               child: Image(
-                image: AssetImage("images/login.jpg"),
+                image: AssetImage("images/start.jpg"),
+                fit: BoxFit.contain,
+                height: 80,
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 1.0, horizontal: 5.0),
+              height: 200,
+              child: Image(
+                image: AssetImage("images/login.png"),
                 fit: BoxFit.contain,
               ),
             ),
@@ -90,7 +100,7 @@ class _LoginState extends State<Login> {
                             if (input.isEmpty) return 'Enter Email';
                           },
                           decoration: InputDecoration(
-                              labelText: 'Email',
+                              labelText: 'UserName/Roll No.',
                               prefixIcon: Icon(Icons.email)),
                           onSaved: (input) => _email = input),
                     ),
