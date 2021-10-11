@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'SignUp.dart';
@@ -7,7 +9,22 @@ class Login extends StatefulWidget {
   _LoginState createState() => _LoginState();
 }
 
+class ListItem {
+  int value;
+  String name;
+
+  ListItem(this.value, this.name);
+}
+
 class _LoginState extends State<Login> {
+  List<ListItem> _dropdownItems = [
+    ListItem(1, "Landlord"),
+    ListItem(2, "Tenant")
+  ];
+
+  List<DropdownMenuItem<ListItem>> _dropdownMenuItems;
+  ListItem _itemSelected;
+
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -27,6 +44,21 @@ class _LoginState extends State<Login> {
   void initState() {
     super.initState();
     this.checkAuthentification();
+    _dropdownMenuItems = buildDropDownMenuItems(_dropdownItems);
+    _itemSelected = _dropdownMenuItems[1].value;
+  }
+
+  List<DropdownMenuItem<ListItem>> buildDropDownMenuItems(List listItems) {
+    List<DropdownMenuItem<ListItem>> items = List();
+    for (ListItem listItem in listItems) {
+      items.add(
+        DropdownMenuItem(
+          child: Text(listItem.name),
+          value: listItem,
+        ),
+      );
+    }
+    return items;
   }
 
   login() async {
@@ -87,6 +119,38 @@ class _LoginState extends State<Login> {
               child: Image(
                 image: AssetImage("images/login.png"),
                 fit: BoxFit.contain,
+              ),
+            ),
+            Text(
+              "Select Role: ",
+              textAlign: TextAlign.left,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Container(
+                height: 50,
+                width: 900,
+                padding: const EdgeInsets.all(5.0),
+                margin: const EdgeInsets.only(left: 10.0, right: 0.0),
+                decoration: BoxDecoration(
+                  color: const Color(0xff7c94b6),
+                  border: Border.all(
+                    color: Colors.black26,
+                    width: 4,
+                  ),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton(
+                      value: _itemSelected,
+                      items: _dropdownMenuItems,
+                      onChanged: (value) {
+                        setState(() {
+                          _itemSelected = value;
+                        });
+                      }),
+                ),
               ),
             ),
             Container(
